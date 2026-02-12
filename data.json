@@ -1,9 +1,5 @@
 {
-    "fecha_actualizacion": "12/02/2026 23:45",
-    "banca_stats": {
-        "banca_actual": 1222.5,
-        "rendimiento": 22.25
-    },
+    "fecha_actualizacion": "12/02/2026 23:50",
     "se\u00f1ales": [
         {
             "partido": "Manchester City vs Brighton",
@@ -11,8 +7,7 @@
             "confianza": 100.0,
             "mercado": "DIRECTA: H\u00e1ndicap Asi\u00e1tico -1.5",
             "categoria": "DIOS",
-            "stake": "$100.0",
-            "cuota_ref": 1.45
+            "stake": "$100.0"
         },
         {
             "partido": "Arsenal vs West Ham",
@@ -20,8 +15,7 @@
             "confianza": 100.0,
             "mercado": "DIRECTA: H\u00e1ndicap Asi\u00e1tico -1.5",
             "categoria": "DIOS",
-            "stake": "$100.0",
-            "cuota_ref": 1.55
+            "stake": "$100.0"
         },
         {
             "partido": "Liverpool vs Wolves",
@@ -29,41 +23,12 @@
             "confianza": 100.0,
             "mercado": "DIRECTA: H\u00e1ndicap Asi\u00e1tico -1.5",
             "categoria": "DIOS",
-            "stake": "$100.0",
-            "cuota_ref": 1.4
-        },
-        {
-            "partido": "Real Madrid vs Sevilla",
-            "fecha": "16/02/2026",
-            "confianza": 100.0,
-            "mercado": "DIRECTA: Gana Local (ML)",
-            "categoria": "EXTRA",
-            "stake": "$30.0",
-            "cuota_ref": 1.65
-        },
-        {
-            "partido": "Inter vs Milan",
-            "fecha": "15/02/2026",
-            "confianza": 100.0,
-            "mercado": "\u26a0\ufe0f VALOR: Gana o Empata (Doble Oportunidad)",
-            "categoria": "EXTRA",
-            "stake": "$30.0",
-            "cuota_ref": 2.1
-        },
-        {
-            "partido": "Bayern vs Bochum",
-            "fecha": "14/02/2026",
-            "confianza": 100.0,
-            "mercado": "DIRECTA: H\u00e1ndicap Asi\u00e1tico -1.5",
-            "categoria": "DIOS",
-            "stake": "$100.0",
-            "cuota_ref": 1.3
+            "stake": "$100.0"
         }
     ],
     "combinada": {
-        "ticket": "Manchester City + Arsenal + Liverpool",
-        "mercado_combinado": "Ganador Triple (H\u00e1ndicap/Directo)",
-        "cuota_total": 6.33,
-        "confianza": "99.1%"
+        "ticket": "City + Arsenal + Liverpool",
+        "instruccion": "APOSTAR A: H\u00e1ndicap Asi\u00e1tico -1.5 en los 3 partidos",
+        "confianza_total": "98.8%"
     }
 }
