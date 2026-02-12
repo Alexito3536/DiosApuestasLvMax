@@ -1,0 +1,30 @@
+[
+    {
+        "partido": "Manchester City vs Everton",
+        "confianza": 100.0,
+        "mercado": "H\u00e1ndicap -1.5",
+        "categoria": "DIOS",
+        "stake": "10%"
+    },
+    {
+        "partido": "Arsenal vs Brentford",
+        "confianza": 100.0,
+        "mercado": "Gana Local",
+        "categoria": "DIOS",
+        "stake": "10%"
+    },
+    {
+        "partido": "Liverpool vs Chelsea",
+        "confianza": 100.0,
+        "mercado": "Gana Local",
+        "categoria": "DIOS",
+        "stake": "10%"
+    },
+    {
+        "partido": "Real Madrid vs Valencia",
+        "confianza": 100.0,
+        "mercado": "H\u00e1ndicap -1.5",
+        "categoria": "DIOS",
+        "stake": "10%"
+    }
+]
