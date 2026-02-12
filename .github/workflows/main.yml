@@ -1,7 +1,7 @@
 name: Scraper Dios-T Automático
 on:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '0 6 * * *'
   workflow_dispatch:
   push:
     branches: [ main ]
