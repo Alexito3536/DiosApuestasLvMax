@@ -1,30 +1,37 @@
 [
     {
-        "partido": "Manchester City vs Everton",
+        "partido": "Manchester City vs Wolves",
         "confianza": 100.0,
         "mercado": "H\u00e1ndicap -1.5",
         "categoria": "DIOS",
-        "stake": "10%"
+        "stake": "$100.00"
     },
     {
-        "partido": "Arsenal vs Brentford",
+        "partido": "Real Madrid vs Getafe",
         "confianza": 100.0,
-        "mercado": "Gana Local",
+        "mercado": "H\u00e1ndicap -1.5",
         "categoria": "DIOS",
-        "stake": "10%"
+        "stake": "$100.00"
     },
     {
         "partido": "Liverpool vs Chelsea",
         "confianza": 100.0,
-        "mercado": "Gana Local",
+        "mercado": "Gana Local Directo",
         "categoria": "DIOS",
-        "stake": "10%"
+        "stake": "$100.00"
     },
     {
-        "partido": "Real Madrid vs Valencia",
+        "partido": "Inter vs Milan",
+        "confianza": 100.0,
+        "mercado": "Gana Local Directo",
+        "categoria": "DIOS",
+        "stake": "$100.00"
+    },
+    {
+        "partido": "Bayern vs Bochum",
         "confianza": 100.0,
         "mercado": "H\u00e1ndicap -1.5",
         "categoria": "DIOS",
-        "stake": "10%"
+        "stake": "$100.00"
     }
 ]
