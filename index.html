@@ -70,3 +70,20 @@
     </script>
 </body>
 </html>
+
+<div class="grid grid-cols-2 gap-4 mb-8 animate__animated animate__fadeIn">
+    <div class="bg-gray-900 border border-green-500 p-4 rounded-lg text-center">
+        <p class="text-[10px] text-gray-400 uppercase">Banca Virtual</p>
+        <p id="banca-total" class="text-2xl font-black text-white">$0.00</p>
+    </div>
+    <div class="bg-gray-900 border border-blue-500 p-4 rounded-lg text-center">
+        <p class="text-[10px] text-gray-400 uppercase">Rendimiento</p>
+        <p id="rendimiento-pct" class="text-2xl font-black text-blue-400">+0%</p>
+    </div>
+</div>
+
+<script>
+    // En tu función cargarDashboard(), añade estas líneas:
+    document.getElementById('banca-total').innerText = "$" + data.banca_stats.banca_actual;
+    document.getElementById('rendimiento-pct').innerText = "+" + data.banca_stats.rendimiento_porcentaje + "%";
+</script>
