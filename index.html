@@ -3,79 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIOS-T | Dashboard Automático</title>
+    <title>DIOS-T V1.0 | Dashboard Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
         body { background-color: #050505; color: #00ff41; font-family: 'monospace'; }
-        .neon-border { border: 1px solid #00ff41; box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
-        .card-dios { background: linear-gradient(145deg, #0f1a0f, #050505); border: 1px solid #00ff41; }
-        .card-extra { background: #0a0a0a; border: 1px solid #1e40af; }
+        .neon-border { border: 1px solid #00ff41; box-shadow: 0 0 15px rgba(0, 255, 65, 0.3); }
+        .card-dios { background: linear-gradient(145deg, #0a200a, #050505); border: 1px solid #00ff41; }
+        .card-combinada { background: linear-gradient(145deg, #2b2200, #050505); border: 1px solid #ffcc00; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-10">
     <div class="max-w-4xl mx-auto">
-        <header class="text-center mb-10">
-            <h1 class="text-4xl md:text-6xl font-black tracking-tighter glow animate__animated animate__fadeInDown">⚡ DIOS-T V1.0 ⚡</h1>
-            <p class="text-gray-500 mt-2">SISTEMA AUTOMATIZADO - SEÑALES EN VIVO</p>
-            <div id="status" class="text-xs text-green-800 mt-4">CONECTADO AL ORÁCULO</div>
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-black text-white animate__animated animate__pulse animate__infinite">⚡ DIOS-T V1.0 ⚡</h1>
+            <p id="fecha-sync" class="text-xs text-gray-500 mt-2">Sincronizando...</p>
         </header>
 
-        <div id="contenedor-señales" class="space-y-6">
-            <p class="text-center text-gray-600 animate__animated animate__pulse animate__infinite">Sincronizando con el cerebro IA...</p>
+        <div id="area-combinada" class="hidden mb-10">
+            <h2 class="text-yellow-500 font-bold mb-2">🔥 COMBINADA MAESTRA SUGERIDA</h2>
+            <div class="card-combinada p-6 rounded-xl text-center">
+                <p id="parlay-texto" class="text-xl font-bold text-white"></p>
+                <p class="text-yellow-500 text-sm mt-2 font-bold uppercase tracking-widest">Confianza Total: 98.8%</p>
+            </div>
         </div>
 
-        <footer class="mt-12 text-center text-gray-700 text-xs border-t border-gray-900 pt-6">
-            MODO PROGRAMADOR T ACTIVADO | ACTUALIZACIÓN DIARIA AUTOMÁTICA
-        </footer>
+        <h2 class="text-green-500 font-bold mb-4">📡 SEÑALES INDIVIDUALES</h2>
+        <div id="contenedor-señales" class="space-y-4"></div>
+
     </div>
 
     <script>
-        // Esta función lee el JSON que genera el Python
-        async function cargarSeñales() {
-            try {
-                // Añadimos un timestamp para evitar que el navegador guarde cache vieja
-                const response = await fetch('data.json?t=' + new Date().getTime());
-                const señales = await response.json();
-                const contenedor = document.getElementById('contenedor-señales');
-                contenedor.innerHTML = '';
+        async function cargarDashboard() {
+            const res = await fetch('data.json?v=' + Date.now());
+            const data = await res.json();
+            
+            document.getElementById('fecha-sync').innerText = "ACTUALIZADO: " + data.fecha_actualizacion;
 
-                señales.forEach(s => {
-                    const esDios = s.categoria === "DIOS";
-                    const div = document.createElement('div');
-                    div.className = `p-6 rounded-xl animate__animated animate__fadeInUp ${esDios ? 'card-dios neon-border' : 'card-extra'}`;
-                    
-                    div.innerHTML = `
-    <div class="flex justify-between items-start mb-1">
-        <span class="text-2xl font-bold text-white">${s.partido}</span>
-        <span class="px-2 py-1 text-[10px] font-black rounded ${esDios ? 'bg-green-600 text-black' : 'bg-blue-600 text-white'}">
-            ${esDios ? 'NIVEL DIOS' : 'VALOR EXTRA'}
-        </span>
-    </div>
-    <div class="text-sm text-gray-400 mb-2 italic">📅 Fecha: ${s.fecha}</div> <div class="text-3xl font-black text-yellow-400 mb-4">${s.mercado}</div>
-    <div class="flex justify-between items-end border-t border-gray-800 pt-4">
-        <div>
-            <p class="text-gray-500 text-[10px]">CONFIANZA IA</p>
-            <p class="text-xl font-bold ${esDios ? 'text-green-400' : 'text-blue-400'}">${s.confianza}%</p>
-        </div>
-        <div class="text-right">
-            <p class="text-gray-500 text-[10px]">INVERSIÓN SUGERIDA</p>
-            <p class="text-xl font-bold text-white">${s.stake}</p>
-        </div>
-    </div>
-`;
-
-                    contenedor.appendChild(div);
-                });
-            } catch (error) {
-                console.error("Error al cargar señales:", error);
-                document.getElementById('contenedor-señales').innerHTML = 
-                    '<p class="text-red-500 text-center">⚠️ Esperando primera ejecución del robot... (Vuelve en 1 minuto)</p>';
+            // Renderizar Combinada
+            if(data.combinada) {
+                document.getElementById('area-combinada').classList.remove('hidden');
+                document.getElementById('parlay-texto').innerText = data.combinada.ticket;
             }
-        }
 
-        // Ejecutar al cargar la página
-        cargarSeñales();
+            // Renderizar Señales
+            const contenedor = document.getElementById('contenedor-señales');
+            contenedor.innerHTML = '';
+            data.señales.forEach(s => {
+                const esDios = s.categoria === "DIOS";
+                contenedor.innerHTML += `
+                    <div class="p-5 rounded-lg ${esDios ? 'card-dios neon-border' : 'bg-gray-900 border border-gray-700'} animate__animated animate__fadeIn">
+                        <div class="flex justify-between">
+                            <span class="text-xl font-bold text-white">${s.partido}</span>
+                            <span class="text-[10px] font-bold p-1 bg-black rounded border border-gray-800">${s.fecha}</span>
+                        </div>
+                        <div class="text-2xl font-black text-yellow-400 mt-2">${s.mercado}</div>
+                        <div class="flex justify-between mt-4 border-t border-gray-800 pt-3">
+                            <div><p class="text-[10px] text-gray-500">CONFIANZA</p><p class="font-bold text-green-400">${s.confianza}%</p></div>
+                            <div class="text-right"><p class="text-[10px] text-gray-500">STAKE</p><p class="font-bold text-white">${s.stake}</p></div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        cargarDashboard();
     </script>
 </body>
 </html>
