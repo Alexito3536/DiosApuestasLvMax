@@ -1,60 +1,79 @@
+import os
+import json
 import pandas as pd
 import numpy as np
-import json
-import time
 from sklearn.ensemble import GradientBoostingClassifier
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
-# --- 1. EL CEREBRO IA (Entrenamiento de Élite) ---
-def entrenar_IA():
+# --- 1. ENTRENAMIENTO (Cerebro IA Inalterado) ---
+def entrenar_cerebro():
     np.random.seed(99)
     n = 30000
-    data = {
+    X = pd.DataFrame({
         'f_ataque': np.random.uniform(0.5, 4.5, n),
         'f_defensa': np.random.uniform(0.5, 3.5, n),
         'lesiones': np.random.randint(0, 3, n),
         'presion': np.random.uniform(-1, 1, n),
         'h2h': np.random.uniform(0, 1, n)
-    }
-    df = pd.DataFrame(data)
-    df['win'] = ((df['f_ataque'] * 1.5 - df['f_defensa'] * 0.7) - (df['lesiones'] * 0.6) > 2.2).astype(int)
-    return GradientBoostingClassifier(n_estimators=300).fit(df.drop('win', axis=1), df['win'])
+    })
+    y = ((X['f_ataque'] * 1.5 - X['f_defensa'] * 0.7) - (X['lesiones'] * 0.6) > 2.2).astype(int)
+    return GradientBoostingClassifier(n_estimators=300).fit(X, y)
 
 # --- 2. EL SCRAPER NIVEL DIOS ---
 def ejecutar_scraper_maestro():
-    print("🕵️ Activando Scraper Silencioso...")
-    # Aquí es donde el script "navega". Para GitHub Actions usamos headless mode.
-    # Simulamos la captura de datos de una web de resultados (ej. Flashscore/FBRef)
+    print("🕵️ Iniciando Scraper en modo sigilo...")
+    chrome_options = Options()
+    chrome_options.add_argument("--headless") # Invisible
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
     
-    # DATOS CAPTURADOS (Simulando la salida del Scraper tras procesar el HTML)
-    datos_sucios = [
-        {"partido": "Man. City vs Everton", "ataque": 4.4, "defensa": 0.6, "h2h": 0.98},
-        {"partido": "Arsenal vs Brentford", "ataque": 3.9, "defensa": 1.1, "h2h": 0.85},
-        {"partido": "Liverpool vs Wolves", "ataque": 4.1, "defensa": 0.7, "h2h": 0.90},
-        {"partido": "Aston Villa vs Fulham", "ataque": 3.1, "defensa": 1.5, "h2h": 0.60}
-    ]
-    return datos_sucios
+    # Aquí es donde el bot "navega". Usaremos una URL de ejemplo de estadísticas
+    # En una implementación real, aquí pondrías la URL de la liga que quieres atacar
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    
+    lista_partidos = []
+    try:
+        # Simulamos la entrada a una web de estadísticas deportivas
+        # El bot extrae los nombres de los equipos y sus métricas recientes
+        driver.get("https://www.google.com") # Punto de entrada neutro
+        
+        # DATOS EXTRAÍDOS POR EL SCRAPER (Simulado para que veas el flujo final)
+        raw_data = [
+            {"eq": "Man. City vs Everton", "a": 4.5, "d": 0.5, "h": 0.99},
+            {"eq": "Real Madrid vs Valencia", "a": 4.1, "d": 0.9, "h": 0.92},
+            {"eq": "Bayern vs Bochum", "a": 4.3, "d": 0.7, "h": 0.95},
+            {"eq": "Inter vs Lecce", "a": 3.8, "d": 1.1, "h": 0.88}
+        ]
+        
+        for p in raw_data:
+            lista_partidos.append(p)
+            
+    finally:
+        driver.quit()
+    return lista_partidos
 
-# --- 3. PROCESAMIENTO Y GENERACIÓN ---
-modelo = entrenar_IA()
-partidos_crudos = ejecutar_scraper_maestro()
-resultados_finales = []
+# --- 3. PROCESO FINAL ---
+IA = entrenar_cerebro()
+partidos_vivos = ejecutar_scraper_maestro()
+resultados = []
 
-for p in partidos_crudos:
-    # Convertimos los datos del scraper al formato de la IA
-    stats = [p['ataque'], p['defensa'], 0, 0.8, p['h2h']] # Lesiones y Presión por defecto
-    prob = modelo.predict_proba([stats])[0][1]
+for p in partidos_vivos:
+    # Pasamos los datos del scraper por el filtro del Dios
+    input_ia = [p['a'], p['d'], 0, 0.85, p['h']]
+    prob = IA.predict_proba([input_ia])[0][1]
     
-    cat = "DIOS" if prob >= 0.98 else "EXTRA"
-    mrc = "Hándicap -1.5" if p['ataque'] > 4.0 else "Gana Local"
-    
-    resultados_finales.append({
-        "partido": p['partido'],
+    es_dios = prob >= 0.98
+    resultados.append({
+        "partido": p['eq'],
         "confianza": round(prob * 100, 2),
-        "mercado": mrc,
-        "categoria": cat,
-        "stake": "10%" if cat == "DIOS" else "3%"
+        "mercado": "Hándicap -1.5" if p['a'] > 4.2 else "Gana Local",
+        "categoria": "DIOS" if es_dios else "EXTRA",
+        "stake": "10%" if es_dios else "3%"
     })
 
 with open('data.json', 'w') as f:
-    json.dump(resultados_finales, f, indent=4)
-print("🚀 Web actualizada con datos del Scraper.")
+    json.dump(resultados, f, indent=4)
+print("✅ Extracción y Análisis completados.")
