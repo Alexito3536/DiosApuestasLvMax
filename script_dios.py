@@ -90,3 +90,29 @@ def sistema_dios_t():
 
 if __name__ == "__main__":
     sistema_dios_t()
+
+# --- NUEVA FUNCIÓN: CALCULADORA DE PROFIT REAL ---
+def calcular_rendimiento(resultados):
+    banca_inicial = 1000.0  # Puedes ajustar esto a tu saldo real
+    profit_acumulado = 0
+    
+    for r in resultados:
+        # Simulamos cuotas promedio del mercado (Hándicap -1.5 suele estar en 1.85+)
+        cuota = 1.90 if r['categoria'] == "DIOS" else 1.70
+        ganancia_neta = (float(r['stake'].replace('$', '')) * cuota) - float(r['stake'].replace('$', ''))
+        profit_acumulado += ganancia_neta
+        
+    return {
+        "banca_actual": round(banca_inicial + profit_acumulado, 2),
+        "rendimiento_porcentaje": round((profit_acumulado / banca_inicial) * 100, 2)
+    }
+
+# --- ACTUALIZACIÓN EN LA FUNCIÓN MAESTRA ---
+# Al final de tu función sistema_dios_t(), añade esto:
+    rendimiento = calcular_rendimiento(resultados_finales)
+    output = {
+        "fecha_actualizacion": fecha_sincro,
+        "banca_stats": rendimiento, # <--- Banca Virtual
+        "señales": resultados_finales,
+        "combinada": generar_combinada(resultados_finales)
+    }
