@@ -1,38 +1,66 @@
-[
-    {
-        "partido": "Manchester City vs Brighton",
-        "fecha": "15/02/2026",
-        "confianza": 100.0,
-        "mercado": "H\u00e1ndicap -1.5",
-        "categoria": "DIOS",
-        "stake": "$100.00",
-        "actualizado": "12/02/2026"
-    },
-    {
-        "partido": "Arsenal vs West Ham",
-        "fecha": "15/02/2026",
-        "confianza": 100.0,
-        "mercado": "H\u00e1ndicap -1.5",
-        "categoria": "DIOS",
-        "stake": "$100.00",
-        "actualizado": "12/02/2026"
-    },
-    {
-        "partido": "Liverpool vs Wolves",
-        "fecha": "16/02/2026",
-        "confianza": 100.0,
-        "mercado": "H\u00e1ndicap -1.5",
-        "categoria": "DIOS",
-        "stake": "$100.00",
-        "actualizado": "12/02/2026"
-    },
-    {
-        "partido": "Real Madrid vs Sevilla",
-        "fecha": "16/02/2026",
-        "confianza": 100.0,
-        "mercado": "Gana Local",
-        "categoria": "DIOS",
-        "stake": "$100.00",
-        "actualizado": "12/02/2026"
+{
+    "fecha_actualizacion": "12/02/2026 23:36",
+    "se\u00f1ales": [
+        {
+            "partido": "Manchester City vs Brighton",
+            "fecha": "15/02/2026",
+            "confianza": 100.0,
+            "mercado": "H\u00e1ndicap -1.5",
+            "categoria": "DIOS",
+            "stake": "$100.00"
+        },
+        {
+            "partido": "Arsenal vs West Ham",
+            "fecha": "15/02/2026",
+            "confianza": 100.0,
+            "mercado": "H\u00e1ndicap -1.5",
+            "categoria": "DIOS",
+            "stake": "$100.00"
+        },
+        {
+            "partido": "Liverpool vs Wolves",
+            "fecha": "16/02/2026",
+            "confianza": 100.0,
+            "mercado": "H\u00e1ndicap -1.5",
+            "categoria": "DIOS",
+            "stake": "$100.00"
+        },
+        {
+            "partido": "Real Madrid vs Sevilla",
+            "fecha": "16/02/2026",
+            "confianza": 100.0,
+            "mercado": "Gana Directo",
+            "categoria": "DIOS",
+            "stake": "$100.00"
+        },
+        {
+            "partido": "Inter vs Milan",
+            "fecha": "15/02/2026",
+            "confianza": 100.0,
+            "mercado": "Gana Directo",
+            "categoria": "DIOS",
+            "stake": "$100.00"
+        },
+        {
+            "partido": "Bayern vs Bochum",
+            "fecha": "14/02/2026",
+            "confianza": 100.0,
+            "mercado": "H\u00e1ndicap -1.5",
+            "categoria": "DIOS",
+            "stake": "$100.00"
+        },
+        {
+            "partido": "PSG vs Nice",
+            "fecha": "14/02/2026",
+            "confianza": 100.0,
+            "mercado": "Gana Directo",
+            "categoria": "DIOS",
+            "stake": "$100.00"
+        }
+    ],
+    "combinada": {
+        "ticket": "Manchester City + Arsenal + Liverpool",
+        "cuota_aprox": 6.33,
+        "confianza_total": "98.8%"
     }
-]
+}
