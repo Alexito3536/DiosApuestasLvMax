@@ -1,0 +1,38 @@
+name: Actualizar Oraculo Dios-T
+
+on:
+  # Se ejecuta automáticamente todos los días a las 00:00 UTC
+  schedule:
+    - cron: '0 0 * * *'
+  # Se ejecuta cada vez que tú haces un cambio (Commit) en el código
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Instalar librerías de IA
+        run: |
+          pip install pandas scikit-learn numpy
+
+      - name: Ejecutar el Cerebro Dios-T
+        run: python script_dios.py
+
+      - name: Guardar y Publicar Resultados
+        run: |
+          git config --global user.name 'Dios-T-Bot'
+          git config --global user.email 'bot@dios.t'
+          git add data.json
+          git commit -m "🤖 Actualización automática: Nuevas señales detectadas" || exit 0
+          git push
+
