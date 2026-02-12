@@ -1,38 +1,27 @@
-name: Actualizar Oraculo Dios-T
-
+name: Ejecutar Scraper Dios
 on:
-  # Se ejecuta automáticamente todos los días a las 00:00 UTC
   schedule:
-    - cron: '0 0 * * *'
-  # Se ejecuta cada vez que tú haces un cambio (Commit) en el código
+    - cron: '0 8 * * *' # Corre a las 8 AM diario
   workflow_dispatch:
-  push:
-    branches: [ main ]
 
 jobs:
-  build:
+  scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout del código
-        uses: actions/checkout@v3
-
-      - name: Configurar Python
+      - uses: actions/checkout@v3
+      - name: Instalar Python y Chrome
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
-      - name: Instalar librerías de IA
+      - name: Instalar Dependencias
         run: |
-          pip install pandas scikit-learn numpy
-
-      - name: Ejecutar el Cerebro Dios-T
+          pip install pandas scikit-learn numpy selenium webdriver-manager
+      - name: Ejecutar Scraper
         run: python script_dios.py
-
-      - name: Guardar y Publicar Resultados
+      - name: Commit de Resultados
         run: |
-          git config --global user.name 'Dios-T-Bot'
+          git config --global user.name 'Scraper-Bot'
           git config --global user.email 'bot@dios.t'
           git add data.json
-          git commit -m "🤖 Actualización automática: Nuevas señales detectadas" || exit 0
+          git commit -m "🔍 Datos frescos extraídos" || exit 0
           git push
-
