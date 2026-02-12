@@ -1,25 +1,40 @@
 name: Scraper Dios-T Automático
 on:
   schedule:
-    - cron: '0 9 * * *' # Se ejecuta a las 9 AM todos los días
+    - cron: '0 9 * * *'
   workflow_dispatch:
   push:
     branches: [ main ]
 
 jobs:
-  build:
+  run-scraper:
     runs-on: ubuntu-latest
+    permissions: # Permisos explícitos de escritura
+      contents: write
     steps:
       - uses: actions/checkout@v3
-      - name: Instalar Python y Selenium
+      
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Instalar Dependencias del Sistema
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Instalar Librerías Python
         run: |
           pip install pandas scikit-learn numpy selenium webdriver-manager
-      - name: Ejecutar Scraper
+
+      - name: Ejecutar el Cerebro Dios-T
         run: python script_dios.py
-      - name: Guardar en Web
+
+      - name: Actualizar Resultados en la Web
         run: |
           git config --global user.name 'Dios-T-Bot'
           git config --global user.email 'bot@dios.t'
           git add data.json
-          git commit -m "🔍 Actualización Automática: Datos del Scraper" || exit 0
+          git commit -m "🔍 Datos frescos extraídos" || exit 0
           git push
