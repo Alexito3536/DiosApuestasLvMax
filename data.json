@@ -1,5 +1,5 @@
 {
-    "fecha_actualizacion": "12/02/2026 23:54",
+    "fecha_actualizacion": "13/02/2026 00:01",
     "banca_stats": {
         "banca_actual": 12225.0,
         "rendimiento": 22.25
@@ -36,7 +36,7 @@
             "partido": "Real Madrid vs Sevilla",
             "fecha": "16/02/2026",
             "confianza": 100.0,
-            "mercado": "DIRECTA: Gana Local (ML)",
+            "mercado": "DIRECTA: Gana Local",
             "categoria": "EXTRA",
             "stake": "$300.0",
             "cuota_ref": 1.65
@@ -62,7 +62,7 @@
     ],
     "combinada": {
         "ticket": "Manchester City + Arsenal + Liverpool",
-        "instruccion": "APOSTAR A: H\u00e1ndicap Asi\u00e1tico -1.5 en cada partido",
+        "instruccion": "MERCADO: H\u00e1ndicap Asi\u00e1tico -1.5 en cada selecci\u00f3n",
         "cuota_total": 6.33,
         "confianza": "98.8%"
     }
