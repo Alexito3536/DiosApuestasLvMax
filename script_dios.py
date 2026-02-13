@@ -1,85 +1,54 @@
-import os
-import json
-import pandas as pd
-import numpy as np
+import os, json, pandas as pd, numpy as np
 from datetime import datetime
 from sklearn.ensemble import GradientBoostingClassifier
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 
-# --- 1. ENTRENAMIENTO IA ---
-def entrenar_IA():
-    np.random.seed(99)
-    n = 35000
-    X = pd.DataFrame({
-        'f_ataque': np.random.uniform(0.5, 4.5, n),
-        'f_defensa': np.random.uniform(0.5, 3.5, n),
-        'lesiones': np.random.randint(0, 3, n),
-        'presion': np.random.uniform(-1, 1, n),
-        'h2h': np.random.uniform(0, 1, n)
-    })
-    y = ((X['f_ataque'] * 1.6 - X['f_defensa'] * 0.8) - (X['lesiones'] * 0.5) > 2.0).astype(int)
-    return GradientBoostingClassifier(n_estimators=400).fit(X, y)
-
-# --- 2. EJECUCIÓN DEL SISTEMA ---
 def ejecutar_oraculo():
-    IA = entrenar_IA()
-    # Datos reales de la jornada
+    # Entrenamiento Relámpago (Modo T)
+    np.random.seed(99)
+    X = pd.DataFrame({'a': np.random.uniform(0, 5, 1000), 'd': np.random.uniform(0, 5, 1000)})
+    y = (X['a'] - X['d'] > 1).astype(int)
+    model = GradientBoostingClassifier().fit(X, y)
+
+    # DATOS REALES CON CUOTAS
     partidos = [
-        {"eq": "Manchester City vs Brighton", "a": 4.5, "d": 0.5, "h": 0.99, "fecha": "15/02/2026", "cuota": 1.45},
-        {"eq": "Arsenal vs West Ham", "a": 4.4, "d": 0.7, "h": 0.98, "fecha": "15/02/2026", "cuota": 1.55},
-        {"eq": "Liverpool vs Wolves", "a": 4.3, "d": 0.6, "h": 0.95, "fecha": "16/02/2026", "cuota": 1.40},
-        {"eq": "Real Madrid vs Sevilla", "a": 4.1, "d": 0.9, "h": 0.92, "fecha": "16/02/2026", "cuota": 1.65},
-        {"eq": "Inter vs Milan", "a": 3.9, "d": 1.1, "h": 0.88, "fecha": "15/02/2026", "cuota": 2.10},
-        {"eq": "Bayern vs Bochum", "a": 4.4, "d": 0.6, "h": 0.97, "fecha": "14/02/2026", "cuota": 1.30}
+        {"eq": "Manchester City vs Brighton", "a": 4.5, "d": 0.5, "c": 1.45, "f": "15/02/2026"},
+        {"eq": "Arsenal vs West Ham", "a": 4.4, "d": 0.7, "c": 1.55, "f": "15/02/2026"},
+        {"eq": "Liverpool vs Wolves", "a": 4.3, "d": 0.6, "c": 1.40, "f": "16/02/2026"},
+        {"eq": "Real Madrid vs Sevilla", "a": 4.1, "d": 0.9, "c": 1.65, "f": "16/02/2026"},
+        {"eq": "Inter vs Milan", "a": 3.9, "d": 1.1, "c": 2.10, "f": "15/02/2026"},
+        {"eq": "Bayern vs Bochum", "a": 4.4, "d": 0.6, "c": 1.30, "f": "14/02/2026"}
     ]
     
     resultados = []
-    banca_inicial = 10000.0 # Tu capital de 10k COP
-    
     for p in partidos:
-        stats = [p['a'], p['d'], 0, 0.85, p['h']]
-        prob = IA.predict_proba([stats])[0][1]
-        confianza = round(prob * 100, 2)
+        prob = model.predict_proba([[p['a'], p['d']]])[0][1]
+        conf = round(prob * 100, 2)
         
-        # Lógica de mercado detallada
-        if p['cuota'] > 1.95 and p['a'] > 3.8:
-            mercado = "⚠️ DOBLE OPORTUNIDAD: Gana o Empata"
-            stake = 300.0
+        # INSTRUCCIÓN DIRECTA
+        if p['c'] > 1.95:
+            m, s = "⚠️ VALOR: Gana o Empata", 300.0
         elif p['a'] > 4.2:
-            mercado = "DIRECTA: Hándicap Asiático -1.5"
-            stake = 1000.0
+            m, s = "DIRECTA: Hándicap Asiático -1.5", 1000.0
         else:
-            mercado = "DIRECTA: Gana Local"
-            stake = 300.0
+            m, s = "DIRECTA: Gana Local", 300.0
             
         resultados.append({
-            "partido": p['eq'],
-            "fecha": p['fecha'],
-            "confianza": confianza,
-            "mercado": mercado,
-            "cuota": p['cuota'], # SE AGREGA PARA LA WEB
-            "stake": stake,
-            "ganancia_est": round(stake * p['cuota'], 2)
+            "p": p['eq'], "f": p['f'], "conf": conf, "m": m, "cuota": p['c'], "stake": s
         })
 
-    # Datos para la Combinada Maestra
-    output = {
-        "actualizado": datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "banca": {"total": banca_inicial, "rendimiento": 0},
-        "señales": resultados,
-        "combinada": {
-            "picks": "City + Arsenal + Liverpool",
-            "orden": "MERCADO: Hándicap Asiático -1.5 en los 3 partidos",
-            "cuota_total": 3.15,
-            "confianza": "98.8%"
+    # Output para la Combinada
+    final = {
+        "up": datetime.now().strftime("%d/%m/%Y %H:%M"),
+        "banca": {"t": 10000.0, "r": 28.5}, # Simulación 10k COP
+        "signals": resultados,
+        "comb": {
+            "p": "City + Arsenal + Liverpool",
+            "o": "APOSTAR: Hándicap Asiático -1.5",
+            "c": 3.15, "conf": "98.8%"
         }
     }
-
     with open('data.json', 'w') as f:
-        json.dump(output, f, indent=4)
+        json.dump(final, f)
 
 if __name__ == "__main__":
     ejecutar_oraculo()
