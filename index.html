@@ -1,89 +1,96 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIOS-T V1.0 | Dashboard Final</title>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIOS-T V1.0 | SISTEMA PROFESIONAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        body { background-color: #050505; color: #00ff41; font-family: 'monospace'; }
-        .neon-border { border: 1px solid #00ff41; box-shadow: 0 0 15px rgba(0, 255, 65, 0.3); }
-        .card-dios { background: linear-gradient(145deg, #0a200a, #050505); border: 1px solid #00ff41; }
-        .card-combinada { background: linear-gradient(145deg, #2b2200, #050505); border: 1px solid #ffcc00; }
+        body { background: #050505; color: #00ff41; font-family: monospace; }
+        .card { background: #0a0a0a; border: 1px solid #1a1a1a; transition: 0.3s; }
+        .card:hover { border-color: #00ff41; box-shadow: 0 0 15px rgba(0,255,65,0.2); }
+        .btn-combinada { background: linear-gradient(45deg, #b8860b, #daa520); color: black; font-weight: 900; }
     </style>
 </head>
-<body class="p-4 md:p-10">
-    <div class="max-w-4xl mx-auto">
-        <header class="text-center mb-8">
-            <h1 class="text-4xl font-black text-white animate__animated animate__pulse animate__infinite">⚡ DIOS-T V1.0 ⚡</h1>
-            <p id="fecha-sync" class="text-xs text-gray-500 mt-2">Sincronizando...</p>
+<body class="p-4">
+    <div class="max-w-md mx-auto">
+        <header class="text-center mb-6">
+            <h1 class="text-3xl font-black text-white">⚡ DIOS-T V1.0 ⚡</h1>
+            <p id="sync" class="text-[10px] text-gray-500 uppercase tracking-widest mt-1"></p>
         </header>
 
-        <div id="area-combinada" class="hidden mb-10">
-            <h2 class="text-yellow-500 font-bold mb-2">🔥 COMBINADA MAESTRA SUGERIDA</h2>
-            <div class="card-combinada p-6 rounded-xl text-center">
-                <p id="parlay-texto" class="text-xl font-bold text-white"></p>
-                <p class="text-yellow-500 text-sm mt-2 font-bold uppercase tracking-widest">Confianza Total: 98.8%</p>
+        <div id="combinada-box" class="mb-8 hidden">
+            <div class="btn-combinada p-4 rounded-xl text-center shadow-lg">
+                <p class="text-xs uppercase opacity-80">Combinada Maestra Sugerida</p>
+                <p id="comb-picks" class="text-lg leading-tight my-1"></p>
+                <p id="comb-orden" class="text-sm font-black bg-black text-yellow-500 py-1 px-2 rounded mt-2"></p>
+                <div class="flex justify-between mt-3 text-xs font-bold border-t border-black/20 pt-2">
+                    <span>CUOTA: <span id="comb-cuota"></span></span>
+                    <span>CONFIANZA: <span id="comb-conf"></span></span>
+                </div>
             </div>
         </div>
 
-        <h2 class="text-green-500 font-bold mb-4">📡 SEÑALES INDIVIDUALES</h2>
-        <div id="contenedor-señales" class="space-y-4"></div>
+        <h2 class="text-xs font-bold text-gray-500 mb-3 tracking-widest uppercase">📡 Señales Individuales</h2>
+        <div id="lista" class="space-y-4"></div>
 
+        <div class="grid grid-cols-2 gap-4 mt-8">
+            <div class="bg-gray-900 p-3 rounded-lg border border-gray-800">
+                <p class="text-[10px] text-gray-500 uppercase">Banca Virtual</p>
+                <p id="banca" class="text-xl font-bold text-white">$0.00</p>
+            </div>
+            <div class="bg-gray-900 p-3 rounded-lg border border-gray-800">
+                <p class="text-[10px] text-gray-500 uppercase">Rendimiento</p>
+                <p id="rend" class="text-xl font-bold text-blue-500">0%</p>
+            </div>
+        </div>
     </div>
 
     <script>
-        async function cargarDashboard() {
-            const res = await fetch('data.json?v=' + Date.now());
-            const data = await res.json();
+        async function load() {
+            const r = await fetch('data.json?v=' + Date.now());
+            const d = await r.json();
             
-            document.getElementById('fecha-sync').innerText = "ACTUALIZADO: " + data.fecha_actualizacion;
-
-            // Renderizar Combinada
-            if(data.combinada) {
-                document.getElementById('area-combinada').classList.remove('hidden');
-                document.getElementById('parlay-texto').innerText = data.combinada.ticket;
+            document.getElementById('sync').innerText = "Actualizado: " + d.actualizado;
+            document.getElementById('banca').innerText = "$" + d.banca.total;
+            
+            // Render Combinada
+            if(d.combinada) {
+                document.getElementById('combinada-box').classList.remove('hidden');
+                document.getElementById('comb-picks').innerText = d.combinada.picks;
+                document.getElementById('comb-orden').innerText = d.combinada.orden;
+                document.getElementById('comb-cuota').innerText = d.combinada.cuota_total;
+                document.getElementById('comb-conf').innerText = d.combinada.confianza;
             }
 
-            // Renderizar Señales
-            const contenedor = document.getElementById('contenedor-señales');
-            contenedor.innerHTML = '';
-            data.señales.forEach(s => {
-                const esDios = s.categoria === "DIOS";
-                contenedor.innerHTML += `
-                    <div class="p-5 rounded-lg ${esDios ? 'card-dios neon-border' : 'bg-gray-900 border border-gray-700'} animate__animated animate__fadeIn">
-                        <div class="flex justify-between">
-                            <span class="text-xl font-bold text-white">${s.partido}</span>
-                            <span class="text-[10px] font-bold p-1 bg-black rounded border border-gray-800">${s.fecha}</span>
+            // Render Señales
+            const list = document.getElementById('lista');
+            d.señales.forEach(s => {
+                list.innerHTML += `
+                    <div class="card p-4 rounded-xl">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-sm font-bold text-white leading-tight">${s.partido}</span>
+                            <span class="text-[9px] bg-gray-800 px-1 py-0.5 rounded text-gray-400">${s.fecha}</span>
                         </div>
-                        <div class="text-2xl font-black text-yellow-400 mt-2">${s.mercado}</div>
-                        <div class="flex justify-between mt-4 border-t border-gray-800 pt-3">
-                            <div><p class="text-[10px] text-gray-500">CONFIANZA</p><p class="font-bold text-green-400">${s.confianza}%</p></div>
-                            <div class="text-right"><p class="text-[10px] text-gray-500">STAKE</p><p class="font-bold text-white">${s.stake}</p></div>
+                        <div class="text-xl font-black text-yellow-400 leading-none mb-4">${s.mercado}</div>
+                        <div class="flex justify-between items-end border-t border-gray-900 pt-3">
+                            <div class="text-center">
+                                <p class="text-[9px] text-gray-600 uppercase">Cuota</p>
+                                <p class="text-sm font-bold text-green-500">${s.cuota}</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-[9px] text-gray-600 uppercase">Confianza</p>
+                                <p class="text-sm font-bold text-white">${s.confianza}%</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[9px] text-gray-600 uppercase">Ganancia Est.</p>
+                                <p class="text-sm font-bold text-white">$${s.ganancia_est}</p>
+                            </div>
                         </div>
                     </div>
                 `;
             });
         }
-        cargarDashboard();
+        load();
     </script>
 </body>
 </html>
-
-<div class="grid grid-cols-2 gap-4 mb-8 animate__animated animate__fadeIn">
-    <div class="bg-gray-900 border border-green-500 p-4 rounded-lg text-center">
-        <p class="text-[10px] text-gray-400 uppercase">Banca Virtual</p>
-        <p id="banca-total" class="text-2xl font-black text-white">$0.00</p>
-    </div>
-    <div class="bg-gray-900 border border-blue-500 p-4 rounded-lg text-center">
-        <p class="text-[10px] text-gray-400 uppercase">Rendimiento</p>
-        <p id="rendimiento-pct" class="text-2xl font-black text-blue-400">+0%</p>
-    </div>
-</div>
-
-<script>
-    // En tu función cargarDashboard(), añade estas líneas:
-    document.getElementById('banca-total').innerText = "$" + data.banca_stats.banca_actual;
-    document.getElementById('rendimiento-pct').innerText = "+" + data.banca_stats.rendimiento_porcentaje + "%";
-</script>
