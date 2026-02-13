@@ -1,5 +1,5 @@
 {
-    "up": "13/02/2026 00:34",
+    "up": "13/02/2026 00:39",
     "banca": {
         "t": 10000.0,
         "r": 28.5
@@ -7,50 +7,43 @@
     "signals": [
         {
             "p": "Manchester City vs Brighton",
-            "f": "15/02/2026",
-            "conf": 100.0,
+            "f": "13/02/2026",
+            "conf": 84.4,
             "m": "DIRECTA: H\u00e1ndicap Asi\u00e1tico -1.5",
             "cuota": 1.45,
-            "stake": 1000.0
+            "stake": 300.0
         },
         {
             "p": "Arsenal vs West Ham",
-            "f": "15/02/2026",
-            "conf": 100.0,
+            "f": "13/02/2026",
+            "conf": 78.0,
             "m": "DIRECTA: H\u00e1ndicap Asi\u00e1tico -1.5",
             "cuota": 1.55,
-            "stake": 1000.0
+            "stake": 300.0
         },
         {
             "p": "Liverpool vs Wolves",
-            "f": "16/02/2026",
-            "conf": 100.0,
+            "f": "13/02/2026",
+            "conf": 76.7,
             "m": "DIRECTA: H\u00e1ndicap Asi\u00e1tico -1.5",
             "cuota": 1.4,
-            "stake": 1000.0
+            "stake": 300.0
         },
         {
             "p": "Real Madrid vs Sevilla",
-            "f": "16/02/2026",
-            "conf": 100.0,
+            "f": "13/02/2026",
+            "conf": 71.6,
             "m": "DIRECTA: Gana Local",
             "cuota": 1.65,
             "stake": 300.0
         },
         {
             "p": "Inter vs Milan",
-            "f": "15/02/2026",
-            "conf": 100.0,
-            "m": "\u26a0\ufe0f VALOR: Gana o Empata",
-            "cuota": 2.1,
+            "f": "13/02/2026",
+            "conf": 64.7,
+            "m": "DIRECTA: Gana Local",
+            "cuota": 2.15,
             "stake": 300.0
-        }
-    ],
-    "historial": [
-        {
-            "p": "Bayern vs Bochum",
-            "r": "\u2705 GANADO",
-            "gain": "+$850"
         }
     ],
     "comb": {
