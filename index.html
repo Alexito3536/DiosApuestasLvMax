@@ -2,49 +2,92 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIOS-T V1.0</title>
+    <title>DIOS-T V2.0 | ORÁCULO AUTOMATIZADO</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>body{background:#050505;color:#00ff41;font-family:monospace;}</style>
+    <style>
+        body { background: #050505; color: #00ff41; font-family: 'Courier New', monospace; }
+        .glass { background: rgba(15, 15, 15, 0.95); border: 1px solid #1a1a1a; }
+        .glow-green { box-shadow: 0 0 15px rgba(0, 255, 65, 0.1); }
+    </style>
 </head>
 <body class="p-4 max-w-md mx-auto">
-    <h1 class="text-2xl font-black text-center text-white mb-1">⚡ DIOS-T V1.0 ⚡</h1>
-    <p id="up" class="text-[9px] text-center text-gray-500 mb-6 font-bold"></p>
+    <header class="text-center mb-6">
+        <h1 class="text-3xl font-black text-white tracking-tighter italic">⚡ DIOS-T V2.0 ⚡</h1>
+        <p id="update-time" class="text-[9px] text-gray-500 font-bold uppercase"></p>
+    </header>
 
-    <div id="c-box" class="mb-6 bg-yellow-600 p-4 rounded-xl text-black font-bold hidden">
-        <p class="text-[10px] uppercase">🔥 Combinada Maestra</p>
-        <p id="c-p" class="text-lg"></p>
-        <p id="c-o" class="bg-black text-yellow-500 text-xs p-1 rounded mt-1"></p>
+    <div class="grid grid-cols-2 gap-4 mb-8">
+        <div class="glass p-4 rounded-2xl border-l-4 border-green-600 glow-green">
+            <p class="text-[10px] text-gray-400 uppercase font-bold">Balance Real</p>
+            <p id="banca-val" class="text-2xl font-black text-white">$0.00</p>
+        </div>
+        <div class="glass p-4 rounded-2xl border-l-4 border-blue-600">
+            <p class="text-[10px] text-gray-400 uppercase font-bold">Rendimiento</p>
+            <p id="rend-val" class="text-2xl font-black text-blue-400">+0%</p>
+        </div>
     </div>
 
-    <div id="list" class="space-y-3"></div>
+    <div id="combinada-box" class="mb-10 bg-gradient-to-br from-yellow-600 to-yellow-700 p-5 rounded-3xl text-black shadow-2xl">
+        <div class="flex items-center gap-2 mb-2">
+            <span class="text-xl">🔥</span>
+            <p class="text-[10px] uppercase font-black tracking-widest">Ticket Combinado Sugerido</p>
+        </div>
+        <p id="comb-picks" class="text-lg font-black leading-tight mb-2"></p>
+        <p id="comb-orden" class="bg-black text-yellow-500 text-[11px] p-3 rounded-xl font-bold italic"></p>
+        <div class="flex justify-between mt-4 text-[10px] font-black border-t border-black/10 pt-3">
+            <span>CUOTA TOTAL: <span id="comb-cuota" class="text-sm">0.00</span></span>
+            <span>CONFIANZA: <span id="comb-conf" class="text-sm">0%</span></span>
+        </div>
+    </div>
+
+    <h2 class="text-[10px] font-black text-gray-600 mb-4 tracking-[0.3em] uppercase border-b border-gray-900 pb-2">📡 Señales Individuales</h2>
+    <div id="signals-list" class="space-y-4 mb-10"></div>
+
+    <h2 class="text-[10px] font-black text-gray-600 mb-4 tracking-[0.3em] uppercase border-b border-gray-900 pb-2">📜 Historial de Éxitos</h2>
+    <div id="hist-list" class="space-y-2 opacity-40 italic text-[11px]"></div>
 
     <script>
-        async function start() {
-            const r = await fetch('data.json?v=' + Date.now());
-            const d = await r.json();
-            document.getElementById('up').innerText = "ACTUALIZADO: " + d.up;
+        async function run() {
+            const resp = await fetch('data.json?v=' + Date.now());
+            const data = await resp.json();
             
-            if(d.comb) {
-                document.getElementById('c-box').classList.remove('hidden');
-                document.getElementById('c-p').innerText = d.comb.p;
-                document.getElementById('c-o').innerText = d.comb.o + " | Cuota: " + d.comb.c;
-            }
+            document.getElementById('update-time').innerText = "Última Sincronización: " + data.up;
+            document.getElementById('banca-val').innerText = "$" + data.banca.t;
+            document.getElementById('rend-val').innerText = "+" + data.banca.r + "%";
+            
+            // Combinada
+            document.getElementById('comb-picks').innerText = data.comb.p;
+            document.getElementById('comb-orden').innerText = data.comb.o;
+            document.getElementById('comb-cuota').innerText = data.comb.c;
+            document.getElementById('comb-conf').innerText = data.comb.conf;
 
-            const container = document.getElementById('list');
-            d.signals.forEach(s => {
-                container.innerHTML += `
-                    <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
-                        <div class="flex justify-between text-[10px] text-gray-400 mb-1">
-                            <span>${s.p}</span><span>${s.f}</span>
-                        </div>
-                        <div class="text-lg font-black text-yellow-400 mb-2">${s.m}</div>
-                        <div class="flex justify-between text-xs font-bold border-t border-gray-800 pt-2">
-                            <span>CUOTA: ${s.cuota}</span><span>CONF: ${s.conf}%</span><span>STAKE: $${s.stake}</span>
-                        </div>
-                    </div>`;
+            // Señales
+            const sList = document.getElementById('signals-list');
+            data.signals.forEach(s => {
+                sList.innerHTML += `
+                <div class="glass p-5 rounded-3xl glow-green">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[11px] font-bold text-gray-400 uppercase tracking-tighter">${s.p}</span>
+                        <span class="text-[9px] bg-gray-800 px-2 py-0.5 rounded text-gray-500">${s.f}</span>
+                    </div>
+                    <div class="text-xl font-black text-yellow-400 leading-none mb-4 italic">${s.m}</div>
+                    <div class="flex justify-between items-center border-t border-gray-900 pt-4">
+                        <div class="text-center"><p class="text-[8px] text-gray-600 uppercase">Cuota</p><p class="text-xs font-bold text-green-500">${s.cuota}</p></div>
+                        <div class="text-center"><p class="text-[8px] text-gray-600 uppercase">Confianza</p><p class="text-xs font-bold text-white">${s.conf}%</p></div>
+                        <div class="text-center"><p class="text-[8px] text-gray-600 uppercase">Stake</p><p class="text-xs font-bold text-white">$${s.stake}</p></div>
+                    </div>
+                </div>`;
+            });
+
+            // Historial
+            const hList = document.getElementById('hist-list');
+            data.historial.forEach(h => {
+                hList.innerHTML += `<div class="flex justify-between border-b border-gray-900 pb-1">
+                    <span>${h.p}</span><span class="text-green-500 font-bold">${h.r} (${h.gain})</span>
+                </div>`;
             });
         }
-        start();
+        run();
     </script>
 </body>
 </html>
