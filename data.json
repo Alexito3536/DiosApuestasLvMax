@@ -1,5 +1,5 @@
 {
-    "up": "13/02/2026 06:55",
+    "up": "14/02/2026 06:39",
     "banca": {
         "t": 10000.0,
         "r": 28.5
@@ -7,7 +7,7 @@
     "signals": [
         {
             "p": "Manchester City vs Brighton",
-            "f": "13/02/2026",
+            "f": "14/02/2026",
             "conf": 84.4,
             "m": "DIRECTA: H\u00e1ndicap Asi\u00e1tico -1.5",
             "cuota": 1.45,
@@ -15,7 +15,7 @@
         },
         {
             "p": "Arsenal vs West Ham",
-            "f": "13/02/2026",
+            "f": "14/02/2026",
             "conf": 78.0,
             "m": "DIRECTA: H\u00e1ndicap Asi\u00e1tico -1.5",
             "cuota": 1.55,
@@ -23,7 +23,7 @@
         },
         {
             "p": "Liverpool vs Wolves",
-            "f": "13/02/2026",
+            "f": "14/02/2026",
             "conf": 76.7,
             "m": "DIRECTA: H\u00e1ndicap Asi\u00e1tico -1.5",
             "cuota": 1.4,
@@ -31,7 +31,7 @@
         },
         {
             "p": "Real Madrid vs Sevilla",
-            "f": "13/02/2026",
+            "f": "14/02/2026",
             "conf": 71.6,
             "m": "DIRECTA: Gana Local",
             "cuota": 1.65,
@@ -39,7 +39,7 @@
         },
         {
             "p": "Inter vs Milan",
-            "f": "13/02/2026",
+            "f": "14/02/2026",
             "conf": 64.7,
             "m": "DIRECTA: Gana Local",
             "cuota": 2.15,
